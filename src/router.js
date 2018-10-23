@@ -9,6 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/post'
+    },
+    {
+      path: '/post',
       name: 'Post',
       component: Post
     },

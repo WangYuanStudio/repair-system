@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Nav />
     <router-view />
     <Footer />
   </div>
@@ -8,18 +7,23 @@
 
 <script>
 // @ is an alias to /src
-import Nav from './components/nav.vue'
 import Footer from './components/footer.vue'
 
 export default {
   name: 'App',
   components: {
-    Nav,
     Footer
   }
 }
 </script>
 
 <style lang="scss">
-
+body{
+  margin: 0;
+}
+a{
+  color: #000;
+  outline:none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
 </style>
