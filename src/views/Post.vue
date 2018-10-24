@@ -49,15 +49,15 @@
           <span class="annotation">（选填，可多选）</span>
         </div>
         <div class="selectBox">
-          <label><input type="checkbox" value="Photoshop" v-model="form.software">Photoshop</label>
-          <label><input type="checkbox" value="SQL Server 2012" v-model="form.software">SQL Server 2012</label>
-          <label><input type="checkbox" value="Visual Studio 2012" v-model="form.software">Visual Studio 2012</label>
-          <label><input type="checkbox" value="Microsoft Office 2010" v-model="form.software">Microsoft Office 2010</label>
+          <label><input type="checkbox" class="inputFix" value="Photoshop" v-model="form.software">Photoshop</label>
+          <label><input type="checkbox" class="inputFix" value="SQL Server 2012" v-model="form.software">SQL Server 2012</label>
+          <label><input type="checkbox" class="inputFix" value="Visual Studio 2012" v-model="form.software">Visual Studio 2012</label>
+          <label><input type="checkbox" class="inputFix" value="Microsoft Office 2010" v-model="form.software">Microsoft Office 2010</label>
         </div>
         <div class="clear"></div>
       </div>
       <div class="item">
-        <label><input type="checkbox" v-model="form.agree">我已阅读并同意</label><span class="highlight">《免责声明》</span>和<span class="highlight">《时间表》</span>。
+        <label><input type="checkbox" class="inputFix" v-model="form.agree">我已阅读并同意</label><span class="highlight">《免责声明》</span>和<span class="highlight">《时间表》</span>。
       </div>
     </div>
   </div>
@@ -191,6 +191,10 @@ export default {
         font-size: 40px;
       }
     }
+    .inputFix{
+      position: relative;
+      top: 3px;
+    }
   }
   .item:last-child{
     border: 0;
@@ -209,10 +213,6 @@ export default {
       label{
         display: block;
         line-height: 70px;
-        input{
-          position: relative;
-          top: 3px;
-        }
       }
     }
   }
