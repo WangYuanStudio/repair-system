@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <router-link to="/post">
+    <router-link to="/post" replace>
       <div class="Post" :class="{active: page }">
         <span>
           <i class="iconfont icon-hekricondingshi"></i>
@@ -8,7 +8,7 @@
         </span>
       </div>
     </router-link>
-    <router-link to="/info">
+    <router-link to="/info" replace>
       <div class="Info" :class="{active: !page }">
         <span>
           <i class="iconfont icon-xinxi"></i>
