@@ -7,3 +7,9 @@ $mainColor : #4ea3ee;
   position: absolute;
   top: 0;
 }
+.clear{
+  clear: both;
+}
+.highlight{
+  color: $mainColor;
+}

@@ -1,14 +1,15 @@
 <template>
   <div class="header">
-    {{title}}
-
+    <p>{{title}}</p>
+    <span v-if="left" @click="left.callback" class="left">{{left.text}}</span>
+    <span v-if="right" @click="right.callback" class="right">{{right.text}}</span>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Header',
-  props: ['title'],
+  props: ['title','right','left'],
   data () {
     return {
 
@@ -22,6 +23,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import '@/assets/baseCss.Scss';
 .header{
   text-align: center;
   height: 94px;
@@ -31,5 +33,22 @@ export default {
   position: fixed;
   top: 0;
   font-size: 32px;
+
+  p{
+    position: absolute;
+    margin: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .left{
+    float: left;
+  }
+
+  .right{
+    float: right;
+    color: $mainColor;
+    padding: 0 30px;
+  }
 }
 </style>

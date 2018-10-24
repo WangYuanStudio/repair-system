@@ -20,6 +20,7 @@ export default {
 <style lang="scss">
 body{
   margin: 0;
+  background-color: #fff;
 }
 a{
   color: #000;
