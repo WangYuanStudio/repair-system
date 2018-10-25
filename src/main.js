@@ -12,6 +12,8 @@ import "./assets/iconfont/iconfont.svg";
 import "./assets/iconfont/iconfont.ttf";
 import "./assets/iconfont/iconfont.woff";
 
+import './extra/filter.js'
+
 new Vue({
   router,
   store,

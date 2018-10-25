@@ -4,24 +4,18 @@
     <div class="process">
       <div class="item process_1">
         <div class="strip strip_right"></div>
-        <div class="round">
-          1
-        </div>
+        <div class="round">1</div>
         <p>提交预约申请</p>
       </div>
       <div class="item process_2">
         <div class="strip strip_right"></div>
         <div class="strip strip_left"></div>
-        <div class="round">
-          2
-        </div>
+        <div class="round">2</div>
         <p>等待预约结果</p>
       </div>
       <div class="item process_3">
         <div class="strip strip_left"></div>
-        <div class="round">
-          3
-        </div>
+        <div class="round">3</div>
         <p>按时前往工作室</p>
       </div>
     </div>
@@ -34,10 +28,10 @@
         手机号码
         <input class="textInput" type="number" v-model="form.number">
       </div>
-      <div class="item">
+      <div class="item" @click="setTimeIsShow = true">
         预约时间
-        <input class="weui-input" type="datetime-local" v-model="form.time" />
-        <label class="setTime" >请选择<i class="iconfont icon-xia"></i></label>
+        <span class="inputText" v-if="form.time">{{form.time | date}}  {{(new Date(form.time )).getDay() | Day}}</span>
+        <label v-if="!form.time" class="setTimeText" >请选择<i class="iconfont icon-xia"></i></label>
       </div>
       <div class="item">
         报装系统类（单选）
@@ -57,8 +51,39 @@
         <div class="clear"></div>
       </div>
       <div class="item">
-        <label><input type="checkbox" class="inputFix" v-model="form.agree">我已阅读并同意</label><span class="highlight">《免责声明》</span>和<span class="highlight">《时间表》</span>。
+        <label><input type="checkbox" class="inputFix" v-model="form.agree">我已阅读并同意</label><span class="highlight" @click="infoIsShow = 1">《免责声明》</span>和<span class="highlight" @click="infoIsShow = 2">《时间表》</span>。
       </div>
+    </div>
+    <div class="weui-skin_android" v-if="setTimeIsShow">
+        <div class="weui-mask" @click="setTimeIsShow = false"></div>
+        <div class="weui-actionsheet" @click="setTimeIsShow = false">
+            <div class="weui-actionsheet__menu">
+                <div class="weui-actionsheet__cell" v-for="(time,index) in times" :key="index"  @click="form.time = time">{{time | date}} {{(new Date(time)).getDay() | Day}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-skin_android" @click="infoIsShow = 0" v-if="infoIsShow">
+        <div class="weui-mask"></div>
+        <div class="content"  v-if="infoIsShow === 1">
+          <h2>免责申明</h2>
+          <ul list-style-type="listStyleType">
+            <li>1、重新安装新系统前，请用户备份重要资料，安装系统资料丢失，本工作室概不负责。</li>
+            <li>2、安装系统后，本工作室会进行简单测试，但不提供保修服务。</li>
+            <li>3、本工作室所有windows操作系统和应用软件安装包，均为网上下载，如用户没有购买正版，由此产生的版权纠纷，本工作室概不负责。</li>
+            <li>4、安装时间过长，可将电脑暂放网园资讯工作室，次日来取。在此期间发生意外，若非本工作室所造成的损失，本工作室概不负责。</li>
+            <li>5、本服务最终解释权由网园资讯工作室所有。</li>
+          </ul>
+        </div>
+        <div class="content" v-if="infoIsShow === 2">
+          <h2>时间表</h2>
+          <ul class="time">
+            <li>星期一：15:00-17:00</li>
+            <li>星期二：15:00-17:00</li>
+            <li>星期三：15:00-17:00</li>
+            <li>星期四：15:00-17:00</li>
+            <li>星期五：15:00-17:00</li>
+          </ul>
+        </div>
     </div>
   </div>
 </template>
@@ -83,7 +108,24 @@ export default {
         software: [],
         agree: false
       },
-      setTimeIsShow: false
+      setTimeIsShow: false,
+      infoIsShow: 0
+    }
+  },
+  computed: {
+    times(){
+      let now = (new Date()).getTime()
+      let list = []
+      let sum = 1
+      while(list.length < 6){
+        let next = now + sum * 86400000
+        let day = (new Date(next)).getDay()
+        if(day !== 6 && day !== 0){
+          list.push(next)
+        }
+        sum++
+      }
+      return list
     }
   },
   methods: {
@@ -158,14 +200,12 @@ export default {
       font-size: 32px;
       line-height: 80px;
     }
-    .setTime{
+    .setTimeText{
       position: relative;
       float: right;
       font-size: 32px;
       color: #bfbfbf;
-      background-color: #fff;
       padding-right: 60px;
-      pointer-events: none;
       i{
         position: absolute;
         top: 55%;
@@ -175,14 +215,9 @@ export default {
         font-weight: 200;
       }
     }
-    .weui-input{
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 130px;
-      border: 0;
-      outline: none;
-      width: calc(100% - 160px);
+    .inputText{
+      margin-left: 5px;
+      font-weight: lighter;
     }
     .selectSystem{
       color: #bfbfbf;
@@ -216,5 +251,39 @@ export default {
       }
     }
   }
+}
+.weui-skin_android{
+  .weui-mask{
+    animation: maskShow 0.2s;
+  }
+  .weui-actionsheet{
+    animation: actionsheetShow 0.2s;
+  }
+  .content{
+    h2{
+      text-align: center;
+    }
+    ul{
+      list-style: none;
+    }
+    .time{
+      text-align: center;
+    }
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
+    z-index: 5000;
+    width: 80vw;
+  }
+}
+@keyframes maskShow{
+  from{opacity: 0}
+  to{opacity: 1}
+}
+@keyframes actionsheetShow{
+  from{top: 45%}
+  to{top: 50%}
 }
 </style>
