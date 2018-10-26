@@ -41,7 +41,7 @@ export default {
   position: fixed;
   bottom: 0;
   background-color: #fff;
-
+  z-index: 1000;
   div{
       width: 50%;
       height: 100%;

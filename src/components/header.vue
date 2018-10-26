@@ -33,7 +33,8 @@ export default {
   position: fixed;
   top: 0;
   font-size: 32px;
-
+  background-color: #fff;
+  z-index: 1000;
   p{
     position: absolute;
     margin: 0;
