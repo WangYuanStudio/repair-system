@@ -40,6 +40,7 @@ export default {
   box-shadow: 0px 5px 25px #aaa;
   position: fixed;
   bottom: 0;
+  background-color: #fff;
 
   div{
       width: 50%;
