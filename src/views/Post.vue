@@ -149,7 +149,7 @@ export default {
         this.$alert('报装项目','至少选择一个报装项目')
         return false
       } else if(!this.agree){
-        this.$alert('免责声明','请阅读和同意免责声明和时间表')
+        this.$alert('免责声明','请阅读并同意免责声明和时间表')
         return false
       } else {
         return true
@@ -157,8 +157,13 @@ export default {
     },
     submit(){
       if(this.verify()){
-        console.log('submit')
-        console.log(this.form)
+        let loadingToast = this.$loadingToast('正在提交')
+        setTimeout(()=>{
+          loadingToast()
+          this.$toast('提交成功')
+          console.log('submit')
+          console.log(this.form)
+        },5000)
       }
     }
   },

@@ -23,6 +23,39 @@ Vue.prototype.$alert = (title,content,callback) => {
   })
 }
 
+Vue.prototype.$toast = (title,time) => {
+  let toast = parseDom(`
+    <div id="toast">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content">${title}</p>
+        </div>
+    </div>
+  `)
+  time = time?time:2000
+  document.body.appendChild(toast)
+  setTimeout(()=>{
+    document.body.removeChild(toast)
+  },time)
+}
+
+Vue.prototype.$loadingToast = (title) => {
+  let loadingToast = parseDom(`
+    <div id="loadingToast">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-loading weui-icon_toast"></i>
+            <p class="weui-toast__content">${title}</p>
+        </div>
+    </div>
+  `)
+  document.body.appendChild(loadingToast)
+  return function(){
+    document.body.removeChild(loadingToast)
+  }
+}
+
 function parseDom(template) {
   let tmp = document.createElement("div")
   tmp.innerHTML = template

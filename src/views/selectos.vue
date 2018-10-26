@@ -62,6 +62,8 @@ export default {
       if(this.agree || !this.info.os){
         Ebus.$emit('selectos',this.info)
         this.$router.go(-1)
+      } else {
+        this.$alert('注意事项','请阅读并同意注意事项')
       }
     }
   }
