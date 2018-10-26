@@ -101,6 +101,9 @@ export default {
         display: none;
         .first{
           margin-right: 50px;
+          .iconfont{
+            font-size: 30px;
+          }
         }
         .prompt{
           color: #bfbfbf;
