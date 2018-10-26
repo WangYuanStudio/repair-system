@@ -39,6 +39,17 @@ Vue.filter("OS", function(value) {
   }
 });
 
+Vue.filter("infoStatus", function(value) {
+  switch(value + '') {
+    case '1':
+      return "等待审核"
+    case '2':
+      return "正在报装"
+    case '3':
+      return "报装完成"
+  }
+});
+
 function format(time, format) {
   let t = new Date(time); // format(time, 'yyyy/MM/dd HH:mm:ss');
   let tf = function(i) {
