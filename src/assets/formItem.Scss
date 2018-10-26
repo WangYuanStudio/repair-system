@@ -1,0 +1,52 @@
+.form{
+  .item{
+    margin-left: 36px;
+    padding-right: 30px;
+    border-bottom: 2px solid #dcdcdc;
+    min-height: 90px;
+    line-height: 90px;
+    color: #050505;
+    font-size: 30px;
+    font-weight: 700;
+    position: relative;
+    .textInput{
+      outline: none;
+      border: 0;
+      width: calc(100% - 200px);
+      height: 80px;
+      font-size: 32px;
+      line-height: 80px;
+      margin-left: 20px;
+    }
+    .setTimeText{
+      position: relative;
+      float: right;
+      font-size: 32px;
+      color: #bfbfbf;
+      padding-right: 60px;
+      i{
+        position: absolute;
+        top: 55%;
+        transform: translateY(-50%);
+        right: 0px;
+        font-size: 60px;
+        font-weight: 200;
+      }
+    }
+    .inputText{
+      margin-left: 5px;
+      font-weight: lighter;
+    }
+    .selectSystem{
+      color: #bfbfbf;
+      float: right;
+      i{
+        font-size: 40px;
+      }
+    }
+    .inputFix{
+      position: relative;
+      top: 3px;
+    }
+  }
+}

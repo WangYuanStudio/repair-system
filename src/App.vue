@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
     <Footer />
   </div>
 </template>
@@ -18,6 +20,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@/assets/weui.Scss';
 body{
   margin: 0;
   background-color: #fff;

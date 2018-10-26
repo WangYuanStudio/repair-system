@@ -30,13 +30,16 @@
       </div>
       <div class="item" @click="setTimeIsShow = true">
         预约时间
-        <span class="inputText" v-if="form.time">{{form.time | date}}  {{(new Date(form.time )).getDay() | Day}}</span>
+        <span class="inputText" v-if="form.time">{{form.time}}</span>
         <label v-if="!form.time" class="setTimeText" >请选择<i class="iconfont icon-xia"></i></label>
       </div>
-      <div class="item">
-        报装系统类（单选）
-        <span class="selectSystem"><i class="iconfont icon-you"></i></span>
-      </div>
+      <router-link to="/selectos">
+        <div class="item">
+          报装系统类（单选）
+          <span class="inputText" v-if="form.os">{{ form.os | OS}}</span>
+          <span class="selectSystem"><i class="iconfont icon-you"></i></span>
+        </div>
+      </router-link>
       <div class="item software">
         <div class="text">
           <span>报装软件类</span><br />
@@ -50,15 +53,15 @@
         </div>
         <div class="clear"></div>
       </div>
-      <div class="item">
-        <label><input type="checkbox" class="inputFix" v-model="form.agree">我已阅读并同意</label><span class="highlight" @click="infoIsShow = 1">《免责声明》</span>和<span class="highlight" @click="infoIsShow = 2">《时间表》</span>。
+      <div class="item item-last">
+        <label><input type="checkbox" class="inputFix" v-model="agree">我已阅读并同意</label><span class="highlight" @click="infoIsShow = 1">《免责声明》</span>和<span class="highlight" @click="infoIsShow = 2">《时间表》</span>。
       </div>
     </div>
     <div class="weui-skin_android" v-if="setTimeIsShow">
         <div class="weui-mask" @click="setTimeIsShow = false"></div>
         <div class="weui-actionsheet" @click="setTimeIsShow = false">
             <div class="weui-actionsheet__menu">
-                <div class="weui-actionsheet__cell" v-for="(time,index) in times" :key="index"  @click="form.time = time">{{time | date}} {{(new Date(time)).getDay() | Day}}</div>
+                <div class="weui-actionsheet__cell" v-for="(time,index) in times" :key="index"  @click="form.time = $options.filters.DateDay(time)">{{time | DateDay}}</div>
             </div>
         </div>
     </div>
@@ -90,6 +93,8 @@
 
 <script>
 import Header from '@/components/header.vue'
+import Ebus from '@/components/ebus.js'
+
 export default {
   name: 'Post',
   components: {
@@ -105,9 +110,10 @@ export default {
         name: '',
         number: '',
         time: '',
-        software: [],
-        agree: false
+        os: '',
+        software: []
       },
+      agree: false,
       setTimeIsShow: false,
       infoIsShow: 0
     }
@@ -129,10 +135,37 @@ export default {
     }
   },
   methods: {
+    verify(){
+      if(!this.form.name){
+        this.$alert('姓名','姓名不能为空')
+        return false
+      } else if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.form.number) && !/^[0-9]{6}$/.test(this.form.number)){
+        this.$alert('手机号','请填写正确的手机长号或短号')
+        return false
+      } else if(!this.form.time){
+        this.$alert('时间','请选择前往工作室的时间')
+        return false
+      } else if(!this.form.os && !this.form.software.length){
+        this.$alert('报装项目','至少选择一个报装项目')
+        return false
+      } else if(!this.agree){
+        this.$alert('免责声明','请阅读和同意免责声明和时间表')
+        return false
+      } else {
+        return true
+      }
+    },
     submit(){
-      console.log('submit')
-      console.log(this.form)
+      if(this.verify()){
+        console.log('submit')
+        console.log(this.form)
+      }
     }
+  },
+  mounted(){
+    Ebus.$on('selectos',(info)=>{
+      this.form.os = info.os
+    })
   }
 }
 </script>
@@ -140,6 +173,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import '@/assets/baseCss.Scss';
+@import '@/assets/formItem.Scss';
 .process{
   height: 190px;
   border-bottom: 2px solid #dcdcdc;
@@ -182,56 +216,7 @@ export default {
   }
 }
 .form{
-  .item{
-    margin-left: 36px;
-    padding-right: 30px;
-    border-bottom: 2px solid #dcdcdc;
-    min-height: 90px;
-    line-height: 90px;
-    color: #050505;
-    font-size: 30px;
-    font-weight: 700;
-    position: relative;
-    .textInput{
-      outline: none;
-      border: 0;
-      width: calc(100% - 200px);
-      height: 80px;
-      font-size: 32px;
-      line-height: 80px;
-    }
-    .setTimeText{
-      position: relative;
-      float: right;
-      font-size: 32px;
-      color: #bfbfbf;
-      padding-right: 60px;
-      i{
-        position: absolute;
-        top: 55%;
-        transform: translateY(-50%);
-        right: 0px;
-        font-size: 60px;
-        font-weight: 200;
-      }
-    }
-    .inputText{
-      margin-left: 5px;
-      font-weight: lighter;
-    }
-    .selectSystem{
-      color: #bfbfbf;
-      float: right;
-      i{
-        font-size: 40px;
-      }
-    }
-    .inputFix{
-      position: relative;
-      top: 3px;
-    }
-  }
-  .item:last-child{
+  .item-last{
     border: 0;
   }
   .software{
@@ -253,12 +238,6 @@ export default {
   }
 }
 .weui-skin_android{
-  .weui-mask{
-    animation: maskShow 0.2s;
-  }
-  .weui-actionsheet{
-    animation: actionsheetShow 0.2s;
-  }
   .content{
     h2{
       text-align: center;
@@ -277,13 +256,5 @@ export default {
     z-index: 5000;
     width: 80vw;
   }
-}
-@keyframes maskShow{
-  from{opacity: 0}
-  to{opacity: 1}
-}
-@keyframes actionsheetShow{
-  from{top: 45%}
-  to{top: 50%}
 }
 </style>

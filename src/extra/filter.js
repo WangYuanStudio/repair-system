@@ -1,25 +1,41 @@
 import Vue from "vue";
 
-Vue.filter("date", function(value) {
-  return format(value, "yyyy-MM-dd");
+Vue.filter("DateDay", function(value) {
+  let Day
+  switch((new Date(value)).getDay()) {
+    case 0:
+      Day = "星期日"
+      break
+    case 1:
+      Day = "星期一"
+      break
+    case 2:
+      Day = "星期二"
+      break
+    case 3:
+      Day = "星期三"
+      break
+    case 4:
+      Day = "星期四"
+      break
+    case 5:
+      Day = "星期五"
+      break
+    case 6:
+      Day = "星期六"
+      break
+  }
+  return `${format(value, "yyyy-MM-dd")} ${Day}`
 });
 
-Vue.filter("Day", function(value) {
-  switch(value) {
-    case 0:
-      return "星期日"
-    case 1:
-      return "星期一"
-    case 2:
-      return "星期二"
-    case 3:
-      return "星期三"
-    case 4:
-      return "星期四"
-    case 5:
-      return "星期五"
-    case 6:
-      return "星期六"
+Vue.filter("OS", function(value) {
+  switch(value + '') {
+    case '1':
+      return "Windows 10"
+    case '2':
+      return "Windows 8"
+    case '3':
+      return "Windows 7"
   }
 });
 

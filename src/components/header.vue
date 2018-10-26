@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <p>{{title}}</p>
-    <span v-if="left" @click="left.callback" class="left">{{left.text}}</span>
+    <span v-if="left" @click="$router.go(-1)" class="left"><i class="iconfont icon-houtui"></i></span>
     <span v-if="right" @click="right.callback" class="right">{{right.text}}</span>
   </div>
 </template>
@@ -43,6 +43,9 @@ export default {
 
   .left{
     float: left;
+    i{
+      font-size: 50px;
+    }
   }
 
   .right{

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -13,6 +14,7 @@ import "./assets/iconfont/iconfont.ttf";
 import "./assets/iconfont/iconfont.woff";
 
 import './extra/filter.js'
+import './extra/weui.js'
 
 new Vue({
   router,
