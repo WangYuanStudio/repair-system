@@ -33,7 +33,7 @@
 
 <script>
 import Header from '@/components/header.vue'
-import Ebus from '@/components/ebus.js'
+import Ebus from '@/extra/ebus.js'
 export default {
   name: 'Post',
   components: {
