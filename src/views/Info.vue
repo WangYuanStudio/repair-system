@@ -1,7 +1,7 @@
 <template>
   <div class="info page">
     <Header title="预约信息" />
-    <div class="list">
+    <div class="list" v-if="list.length">
       <div class="item" v-for="(item,index) in list" :key="index" :class="{active:item.active}" @click="item.active = !item.active">
         <div class="centent">
           {{item.os?`${item.os}、`:''}}{{item.software.join('、')}}<i class="iconfont icon-xia"></i>
@@ -13,6 +13,12 @@
           <span class="status" :class="{todo:item.status<3}">{{item.status | infoStatus}}</span>
         </div>
       </div>
+    </div>
+    <div class="noinfo" v-if="ready && !list.length">
+      Nothing!
+    </div>
+    <div class="noinfo" v-if="!ready">
+      Loading。。
     </div>
   </div>
 </template>
@@ -60,7 +66,8 @@ export default {
           os: 'Windows 10',
           software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
         }
-      ]
+      ],
+      ready: true, // 请求信息完成后变为true
     }
   }
 }
@@ -134,6 +141,14 @@ export default {
         display: block;
       }
     }
+  }
+  .noinfo{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    font-size: 30px;
+    color: #bfbfbf;
   }
 }
 </style>
