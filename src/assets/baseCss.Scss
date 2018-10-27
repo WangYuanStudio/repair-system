@@ -9,7 +9,8 @@ $mainColor : #4ea3ee;
 }
 .adminPage{
   width: 100vw;
-  min-height: 100vh;
+  min-height: calc(100vh - 94px);
+  margin-top: 94px;
   position: absolute;
   top: 0;
   background-color: #fff;
