@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view />
     </keep-alive>
-    <Footer />
+    <Footer v-if="!$route.meta.admin" />
   </div>
 </template>
 
