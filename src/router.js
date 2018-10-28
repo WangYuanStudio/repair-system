@@ -66,15 +66,8 @@ export default new Router({
           path: 'nodo',
           component: Nodo,
           meta: { admin: true }
-        },
-        {
-          path: '*',
-          redirect: '/admin'
         }
       ]
-    },{
-      path: '*',
-      redirect: '/post'
     }
   ]
 })

@@ -1,12 +1,18 @@
 <template>
   <div class="history adminPage">
+    <Header title="历史记录" :left="true"/>
     history
   </div>
 </template>
 
 <script>
+import Header from '@/components/header.vue'
+
 export default {
   name: 'History',
+  components: {
+    Header
+  },
   data(){
     return {
 

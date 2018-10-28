@@ -1,12 +1,17 @@
 <template>
   <div class="node adminPage">
+    <Header title="待完成的安装记录" :left="true"/>
     node
   </div>
 </template>
 
 <script>
+import Header from '@/components/header.vue'
 export default {
   name: 'Nodo',
+  components: {
+    Header
+  },
   data(){
     return {
 
