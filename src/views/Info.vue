@@ -7,10 +7,13 @@
           {{item.os?`${item.os}、`:''}}{{item.software.join('、')}}<i class="iconfont icon-xia"></i>
         </div>
         <div class="line"></div>
-        <div class="info">
-          <span class="first"><i class="iconfont icon-time prompt"></i>{{item.time}}</span>
-          <span><span class="prompt">预约码：</span>{{item.id}}</span>
-          <span class="status" :class="{todo:item.status<3}">{{item.status | infoStatus}}</span>
+        <div class="item-info">
+          <p>
+            <span class="first"><i class="iconfont icon-time prompt"></i>{{item.time}}</span>
+            <span><span class="prompt">预约码：</span>{{item.id}}</span>
+            <span class="status" :class="{todo:item.status<3}">{{item.status | infoStatus}}</span>
+          </p>
+          <p v-if="item.errMsg" class="errMsg"><span class="prompt">失败理由：</span>{{item.errMsg}}</p>
         </div>
       </div>
     </div>
@@ -60,7 +63,8 @@ export default {
         },
         {
           active: false,
-          status: '3',
+          status: '4',
+          errMsg: '电脑无法识别U盘电脑无法识别U盘电脑无法识别U盘',
           id: '233',
           time: '2018/08/18',
           os: 'Windows 10',
@@ -104,23 +108,26 @@ export default {
         height: 2px;
         display: none;
       }
-      .info{
+      .item-info{
         display: none;
-        .first{
-          margin-right: 50px;
-          .iconfont{
-            font-size: 30px;
+        p{
+          margin: 0;
+          .first{
+            margin-right: 50px;
+            .iconfont{
+              font-size: 30px;
+            }
           }
-        }
-        .prompt{
-          color: #bfbfbf;
-          margin-right: 8px;
-        }
-        .status{
-          float: right;
-        }
-        .todo{
-          color: #bfbfbf;
+          .prompt{
+            color: #bfbfbf;
+            margin-right: 8px;
+          }
+          .status{
+            float: right;
+          }
+          .todo{
+            color: #bfbfbf;
+          }
         }
       }
     }
@@ -137,7 +144,7 @@ export default {
       .line{
         display: block;
       }
-      .info{
+      .item-info{
         display: block;
       }
     }

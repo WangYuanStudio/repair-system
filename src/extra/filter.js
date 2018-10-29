@@ -47,6 +47,8 @@ Vue.filter("infoStatus", function(value) {
       return "正在报装"
     case '3':
       return "报装完成"
+    case '4':
+      return "报装失败"
   }
 });
 
