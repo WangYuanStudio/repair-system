@@ -1,16 +1,16 @@
 <template>
   <div class="admin">
-    <router-link to="admin/nodo">
+    <router-link to="/admin/nodo">
       <div class="item">
         待完成的安装记录<i class="iconfont icon-you"></i>
       </div>
     </router-link>
-    <router-link to="admin/history">
+    <router-link to="/admin/history">
       <div class="item">
         历史记录<i class="iconfont icon-you"></i>
       </div>
     </router-link>
-    <router-link to="admin/modify">
+    <router-link to="/admin/modify">
       <div class="item">
         修改报装时间<i class="iconfont icon-you"></i>
       </div>

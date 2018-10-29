@@ -29,5 +29,6 @@ a{
   color: #000;
   outline:none;
   -webkit-tap-highlight-color: rgba(0,0,0,0);
+  text-decoration: none;
 }
 </style>
