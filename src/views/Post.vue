@@ -243,6 +243,8 @@ export default {
   }
 }
 .weui-skin_android{
+  position: relative;
+  z-index: 2233;
   .content{
     h2{
       text-align: center;
