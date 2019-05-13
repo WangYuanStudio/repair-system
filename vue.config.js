@@ -3,7 +3,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/": {
-        target: "",
+        target: "https://web.test.wangyuan.info/wy_app_bz/public/index.php/",
         changeOrigin: true,
         ws: false
       }

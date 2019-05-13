@@ -4,14 +4,15 @@
     <div class="list" v-if="list.length">
       <div class="item" v-for="(item,index) in list" :key="index" :class="{active:item.active}" @click="item.active = !item.active">
         <div class="centent">
-          {{item.os?`${item.os}、`:''}}{{item.software.join('、')}}<i class="iconfont icon-xia"></i>
+          {{item.os_project?item.os_project:''}}{{item.soft_project&&item.os_project?'、':''}}{{item.soft_project}}<i class="iconfont icon-xia"></i>
+          <!-- {{item.project}}<i class="iconfont icon-xia"></i> -->
         </div>
         <div class="line"></div>
         <div class="item-info">
           <p>
             <span class="first"><i class="iconfont icon-time prompt"></i>{{item.time}}</span>
             <span><span class="prompt">预约码：</span>{{item.id}}</span>
-            <span class="status" :class="{todo:item.status<3}">{{item.status | infoStatus}}</span>
+            <span class="status" @click.stop="showFailDetail(item)" :class="{todo:item.status<4}">{{item.status | infoStatus}}</span>
           </p>
           <p v-if="item.errMsg" class="errMsg"><span class="prompt">失败理由：</span>{{item.errMsg}}</p>
         </div>
@@ -37,42 +38,41 @@ export default {
   data(){
     return {
       list: [
-        {
-          active: true,
-          status: '1',
-          id: '233',
-          time: '2018/10/22',
-          os: 'Windows 10',
-          software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
-        },
-        {
-          active: true,
-          status: '2',
-          id: '234',
-          time: '2018/10/18',
-          os: '',
-          software: ['Microsoft Office 2012']
-        },
-        {
-          active: false,
-          status: '3',
-          id: '235',
-          time: '2018/09/18',
-          os: 'Windows 8',
-          software: ['Microsoft Office 2012']
-        },
-        {
-          active: false,
-          status: '4',
-          errMsg: '电脑无法识别U盘电脑无法识别U盘电脑无法识别U盘',
-          id: '233',
-          time: '2018/08/18',
-          os: 'Windows 10',
-          software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
-        }
       ],
       ready: true, // 请求信息完成后变为true
     }
+  },
+  computed: {
+    oid(){
+      return this.$store.state.oid
+    }
+  },
+  methods: {
+    showFailDetail(item){
+      if(item.status === "2"){
+        this.$alert({
+          title: '审核失败',
+          content: item.fail_detail
+        })
+      }
+    }
+  },
+  beforeRouteEnter(to, from, next){
+    next(vm=>{
+      vm.$axios({
+        url: `/front/history/${vm.oid}`,
+        method: 'get'
+      }).then((rep)=>{
+        if(rep.code === "0"){
+          rep.data.forEach((item)=>{
+            item.active = false
+          })
+          vm.list = rep.data.reverse()
+        }else{
+          vm.list = []
+        }
+      })
+    })
   }
 }
 </script>
@@ -112,6 +112,7 @@ export default {
         display: none;
         p{
           margin: 0;
+          position: relative;
           .first{
             margin-right: 50px;
             .iconfont{
@@ -123,7 +124,10 @@ export default {
             margin-right: 8px;
           }
           .status{
-            float: right;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 0;
           }
           .todo{
             color: #bfbfbf;
@@ -148,14 +152,6 @@ export default {
         display: block;
       }
     }
-  }
-  .noinfo{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    font-size: 30px;
-    color: #bfbfbf;
   }
 }
 </style>

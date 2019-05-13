@@ -15,6 +15,11 @@ const Historys = (resolve) => {
     resolve(module)
   })
 }
+const HistorysIndex = (resolve) => {
+  import('./views/admin/historysIndex.vue').then(module => {
+    resolve(module)
+  })
+}
 const Modify = (resolve) => {
   import('./views/admin/modify.vue').then(module => {
     resolve(module)
@@ -54,8 +59,35 @@ export default new Router({
       children: [
         {
           path: 'history',
-          component: Historys,
-          meta: { admin: true }
+          component: HistorysIndex,
+          meta: { admin: true },
+          children: [
+            {
+              path: 'triduum',
+              component: Historys,
+              meta: { admin: true, type: 'triduum' }
+            },
+            {
+              path: 'hebdomad',
+              component: Historys,
+              meta: { admin: true, type: 'hebdomad' }
+            },
+            {
+              path: 'onemonth',
+              component: Historys,
+              meta: { admin: true, type: 'onemonth' }
+            },
+            {
+              path: 'oneyear',
+              component: Historys,
+              meta: { admin: true, type: 'oneyear' }
+            },
+            {
+              path: 'all',
+              component: Historys,
+              meta: { admin: true, type: 'all' }
+            },
+          ],
         },
         {
           path: 'modify',
@@ -69,5 +101,14 @@ export default new Router({
         }
       ]
     }
-  ]
+  ],
+  saveScrollPostioin: true,
+  scrollBehavior(to, from, savedPosition) {
+    // savedPosition   仅当浏览器前进后退时才有值
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
 })

@@ -27,7 +27,9 @@ Vue.filter("DateDay", function(value) {
   }
   return `${format(value, "yyyy-MM-dd")} ${Day}`
 });
-
+Vue.filter("DateDay2", function(value) {
+  return `${format(value, "yyyy-MM-dd")}`
+});
 Vue.filter("OS", function(value) {
   switch(value + '') {
     case '1':
@@ -41,14 +43,16 @@ Vue.filter("OS", function(value) {
 
 Vue.filter("infoStatus", function(value) {
   switch(value + '') {
-    case '1':
+    case '0':
       return "等待审核"
+    case '1':
+      return "审核成功"
     case '2':
-      return "正在报装"
+      return "审核失败"
     case '3':
-      return "报装完成"
+      return "安装成功"
     case '4':
-      return "报装失败"
+      return "安装失败"
   }
 });
 

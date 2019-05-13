@@ -26,7 +26,12 @@
       </div>
       <div class="item">
         手机号码
-        <input class="textInput" type="number" v-model="form.number">
+        <input class="textInput" type="number" v-model="form.phone">
+      </div>
+      <div class="item">
+        密码
+        <input class="textInput" type="password" v-model="form.w_old_password">
+        <span class="hint">选填</span>
       </div>
       <div class="item" @click="setTimeIsShow = true">
         预约时间
@@ -36,7 +41,7 @@
       <router-link to="/selectos">
         <div class="item">
           报装系统类（单选）
-          <span class="inputText" v-if="form.os">{{ form.os | OS}}</span>
+          <span class="inputText" v-if="form.osinfo">{{ form.osinfo.os}}</span>
           <span class="selectSystem"><i class="iconfont icon-you"></i></span>
         </div>
       </router-link>
@@ -61,12 +66,12 @@
         <div class="weui-mask" @click="setTimeIsShow = false"></div>
         <div class="weui-actionsheet" @click="setTimeIsShow = false">
             <div class="weui-actionsheet__menu">
-                <div class="weui-actionsheet__cell" v-for="(time,index) in times" :key="index"  @click="form.time = $options.filters.DateDay(time)">{{time | DateDay}}</div>
+                <div class="weui-actionsheet__cell" v-for="(time,index) in times" :key="index"  @click="form.time = $options.filters.DateDay2(time)">{{time | DateDay}}</div>
             </div>
         </div>
     </div>
     <div class="weui-skin_android" @click="infoIsShow = 0" v-if="infoIsShow">
-        <div class="weui-mask"></div>
+      <div class="weui-mask">
         <div class="content"  v-if="infoIsShow === 1">
           <h2>免责申明</h2>
           <ul list-style-type="listStyleType">
@@ -87,6 +92,7 @@
             <li>星期五：15:00-17:00</li>
           </ul>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -108,9 +114,10 @@ export default {
       },
       form: {
         name: '',
-        number: '',
+        phone: '',
         time: '',
-        os: '',
+        w_old_password: '',
+        osinfo: '',
         software: []
       },
       agree: false,
@@ -135,21 +142,32 @@ export default {
     }
   },
   methods: {
+    resetData(){
+      this.form = {
+        name: '',
+        phone: '',
+        time: '',
+        w_old_password: '',
+        osinfo: '',
+        software: []
+      }
+      this.agree = false
+    },
     verify(){
       if(!this.form.name){
-        this.$alert('姓名','姓名不能为空')
+        this.$alert({title: '姓名',content: '姓名不能为空'})
         return false
-      } else if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.form.number) && !/^[0-9]{6}$/.test(this.form.number)){
-        this.$alert('手机号','请填写正确的手机长号或短号')
+      } else if(!/^[1][3,4,5,7,8][0-9]{9}$/.test(this.form.phone) && !/^[0-9]{6}$/.test(this.form.phone)){
+        this.$alert({title: '手机号',content: '请填写正确的手机长号或短号'})
         return false
       } else if(!this.form.time){
-        this.$alert('时间','请选择前往工作室的时间')
+        this.$alert({title: '时间',content: '请选择前往工作室的时间'})
         return false
       } else if(!this.form.os && !this.form.software.length){
-        this.$alert('报装项目','至少选择一个报装项目')
+        this.$alert({title: '报装项目',content: '至少选择一个报装项目'})
         return false
       } else if(!this.agree){
-        this.$alert('免责声明','请阅读并同意免责声明和时间表')
+        this.$alert({title: '免责声明',content: '请阅读并同意免责声明和时间表'})
         return false
       } else {
         return true
@@ -157,19 +175,37 @@ export default {
     },
     submit(){
       if(this.verify()){
-        let loadingToast = this.$loadingToast('正在提交')
-        setTimeout(()=>{
+        let loadingToast = this.$loadingToast({title:'正在提交'})
+        let data = {
+          oid: this.$store.state.oid,
+          name: this.form.name,
+          phone: this.form.phone,
+          time: this.form.time,
+          os_project: this.form.osinfo.os,
+          soft_project: this.form.software.join(','),
+          w_old_password: this.form.w_old_password,
+          w_username: this.form.osinfo.w_username,
+          w_password: this.form.osinfo.w_password
+        }
+        this.$axios({
+          url: '/front/info',
+          method: 'post',
+          data
+        }).then((rep)=>{
           loadingToast()
-          this.$toast('提交成功')
-          console.log('submit')
-          console.log(this.form)
-        },5000)
+          if(rep.code === "0"){
+            this.$toast({title:'提交成功'})
+            this.resetData()
+          }else{
+            this.$alert({title:'提交失败',content: '请重试或联系管理员'})
+          }
+        })
       }
     }
   },
   mounted(){
     Ebus.$on('selectos',(info)=>{
-      this.form.os = info.os
+      this.form.osinfo = info
     })
   }
 }
@@ -221,8 +257,10 @@ export default {
   }
 }
 .form{
-  .item-last{
-    border: 0;
+  .item{
+    .hint{
+      color: #bfbfbf;
+    }
   }
   .software{
     padding: 20px 0;

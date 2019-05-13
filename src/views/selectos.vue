@@ -7,26 +7,26 @@
     <div class="form">
       <div class="item radio">
         新系统
-        <label><input type="radio" class="inputFix" value="1" v-model="info.os">win10</label>
-        <label><input type="radio" class="inputFix" value="2" v-model="info.os">win8</label>
-        <label><input type="radio" class="inputFix" value="3" v-model="info.os">win7</label>
+        <label><input type="radio" class="inputFix" value="win10" v-model="info.os">win10</label>
+        <label><input type="radio" class="inputFix" value="win8" v-model="info.os">win8</label>
+        <label><input type="radio" class="inputFix" value="win7" v-model="info.os">win7</label>
         <label><input type="radio" class="inputFix" value="" v-model="info.os">不需要重装</label>
       </div>
-      <div class="item">
+      <!-- <div class="item">
         旧密码
-        <input class="textInput" type="password" v-model="info.pwd">
-      </div>
+        <input class="textInput" type="password" v-model="info.w_old_password">
+      </div> -->
       <div class="item">
         新用户名
-        <input class="textInput" type="text" v-model="info.name">
+        <input class="textInput" type="text" v-model="info.w_username">
       </div>
-      <div class="item">
+      <div class="item item-last">
         新密码
-        <input class="textInput" type="password" v-model="info.newPwd">
+        <input class="textInput" type="password" v-model="info.w_password">
       </div>
     </div>
     <div class="agreement">
-      <label><input type="checkbox" class="inputFix" v-model="agree">我已</label><span class="highlight" @click="infoIsShow = 1">备份好C盘内个人的重要文件夹</span>并<span class="highlight" @click="infoIsShow = 2">同意清空C盘驱动器</span>。
+      <label><input type="checkbox" class="inputFix" v-model="agree">我已<span class="highlight" @click="infoIsShow = 1">备份好系统盘内个人的重要文件夹</span>并<span class="highlight" @click="infoIsShow = 2">同意清空系统盘驱动器</span>。</label>
     </div>
   </div>
 </template>
@@ -46,10 +46,10 @@ export default {
         callback: this.submit
       },
       info: {
-        os: 'win10',
-        pwd: '',
-        name: '',
-        newPwd: ''
+        os: '',
+        // w_old_password: '',
+        w_username: '',
+        w_password: ''
       },
       agree: false
     }
@@ -58,12 +58,20 @@ export default {
 
   },
   methods: {
+    verify(){
+      if(!this.info.os){
+        return true
+      }
+      if(!this.agree){
+        this.$alert({title: '注意事项',content: '请阅读并同意注意事项'})
+        return false
+      }
+      return true
+    },
     submit(){
-      if(this.agree || !this.info.os){
+      if(this.verify()){
         Ebus.$emit('selectos',this.info)
         this.$router.go(-1)
-      } else {
-        this.$alert('注意事项','请阅读并同意注意事项')
       }
     }
   }

@@ -15,6 +15,11 @@
         修改报装时间<i class="iconfont icon-you"></i>
       </div>
     </router-link>
+    <router-link to="/">
+      <div class="item">
+        返回前台
+      </div>
+    </router-link>
     <keep-alive>
       <router-view />
     </keep-alive>

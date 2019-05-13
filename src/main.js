@@ -15,6 +15,8 @@ import "./assets/iconfont/iconfont.woff";
 
 import './extra/filter.js'
 import './extra/weui.js'
+import './extra/axios.js'
+import './extra/public.js'
 
 new Vue({
   router,

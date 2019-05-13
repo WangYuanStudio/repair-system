@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <router-link to="/post" replace>
-      <div class="Post" :class="{active: page }">
+      <div class="Post" :class="{active: (/post/.test(path) || /selectos/.test(path)) }">
         <span>
           <i class="iconfont icon-hekricondingshi"></i>
           报装预约
@@ -9,7 +9,7 @@
       </div>
     </router-link>
     <router-link to="/info" replace>
-      <div class="Info" :class="{active: !page }">
+      <div class="Info" :class="{active: /info/.test(path) }">
         <span>
           <i class="iconfont icon-xinxi"></i>
           预约信息
@@ -23,8 +23,8 @@
 export default {
   name: 'Footer',
   computed: {
-    page () {
-      return /post/.test(this.$route.path)
+    path () {
+      return this.$route.path
     }
   }
 }

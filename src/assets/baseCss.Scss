@@ -5,6 +5,7 @@ $mainColor : #4ea3ee;
   min-height: calc(100vh - 194px);
   margin: 94px 0 100px 0;
   position: absolute;
+  padding-bottom: 40px;
   top: 0;
 }
 .adminPage{
@@ -20,4 +21,12 @@ $mainColor : #4ea3ee;
 }
 .highlight{
   color: $mainColor;
+}
+.noinfo{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 30px;
+  color: #bfbfbf;
 }

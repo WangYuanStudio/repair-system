@@ -7,7 +7,7 @@
       <span class="last-span">状态</span>
     </div>
     <div class="list">
-      <div class="item" v-for="(item,index) in list" :key="index" :class="{active: !item.active}" @click="item.active = !item.active">
+      <div class="item" v-for="(item,index) in list" :key="index" :class="{active: item.active}" @click="item.active = !item.active">
         <div class="info-1">
           <span>{{item.name}}</span>
           <span>{{item.time}}</span>
@@ -19,16 +19,20 @@
             <span>联系电话：{{item.phone}}</span>
         </div>
         <div class="info-3">
-          报装项目：{{item.software.join('、')}}
+          报装项目：{{item.os_project?item.os_project:''}}{{item.soft_project&&item.os_project?'、':''}}{{item.soft_project}}
         </div>
         <div class="buttons">
-          <div class="button" @click.stop="accept">通过</div>
-          <div class="button" @click.stop="refused">拒绝</div>
-          <div class="button" :class="{ban: item.status === '1'}" @click.stop="success">安装成功</div>
-          <div class="button last-child" :class="{ban: item.status === '1'}" @click.stop="fail">安装失败</div>
+          <div class="button" :class="{allow: item.status === '0'}" @click.stop="accept(item)">通过</div>
+          <div class="button" :class="{allow: item.status === '0'}" @click.stop="refused(item)">拒绝</div>
+          <div class="button" :class="{allow: item.status === '1'}" @click.stop="success(item)">安装成功</div>
+          <div class="button last-child" :class="{allow: item.status === '1'}" @click.stop="fail(item)">安装失败</div>
         </div>
       </div>
     </div>
+    <!-- <div class="search">
+      <input type="text" placeholder="搜索ID号" v-model="searchKey">
+      <img src="@/assets/icon/search.png">
+    </div> -->
   </div>
 </template>
 
@@ -41,44 +45,105 @@ export default {
   },
   data(){
     return {
-      list: [
-        {
-          active: true,
-          name: '付丹妮',
-          time: '2018-09-18',
-          status: '1',
-          id: '150',
-          phone: '13178852579',
-          software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
-        },
-        {
-          active: false,
-          name: '付丹妮',
-          time: '2018-09-18',
-          status: '1',
-          id: '150',
-          phone: '13178852579',
-          software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
-        }
-      ]
+      list: [],
+      isMounted:false,
+      searchKey: ""
     }
   },
   computed: {
-
+    oid(){
+      return this.$store.state.oid
+    }
   },
   methods: {
-    accept(){
-
+    load(){
+      this.list = []
+      let cancel = this.$loadingToast({title:'加载中'})
+      this.$axios({
+        url: `/admin/checkList`,
+        method: 'get'
+      }).then((rep)=>{
+        rep.data.forEach((item)=>{
+          item.active = false
+        })
+        this.list = rep.data.reverse()
+        cancel()
+      })
     },
-    refused(){
-
+    accept(item){
+      if(item.status !== '0') return
+      this.setStatus(item,'1')
     },
-    success(){
-
+    refused(item){
+      if(item.status !== '0') return
+      this.$input({
+        title: '审核失败',
+        callback: (confirm,info)=>{
+          if(confirm){
+            this.setStatus(item,'2',info)
+          }
+        }
+      })
     },
-    fail(){
-
+    success(item){
+      if(item.status !== '1') return
+      this.setStatus(item,'3')
+    },
+    fail(item){
+      if(item.status !== '1') return
+      this.$input({
+        title: '安装失败',
+        callback: (confirm,info)=>{
+          if(confirm){
+            this.setStatus(item,'4',info)
+          }
+        }
+      })
+    },
+    setStatus(item,status,info){
+      this.$confirm({
+        content: `确定要${this.$options.filters.infoStatus(status)}吗`,
+        callback: (confirm)=>{
+          if(confirm){
+            let cancel = this.$loadingToast({title:'正在提交'})
+            this.$axios({
+              url: '/admin/status',
+              method: 'put',
+              data: {
+                status,
+                oid: this.oid,
+                id: item.id,
+                fail_detail: info
+              }
+            }).then((res)=>{
+              cancel()
+              if(res.code === '0'){
+                this.$toast({title:'提交成功'})
+                item.status = status
+              }else{
+                this.$alert({
+                  content: res.data
+                })
+              }
+            })
+          }
+        }
+      })
     }
+  },
+  watcher(){
+
+  },
+  mounted(){
+    this.isMounted = true
+    this.load()
+  },
+  beforeRouteEnter(to, from, next){
+    next(vm=>{
+      if(vm.isMounted){
+        vm.load()
+      }
+    })
   }
 }
 </script>
@@ -153,7 +218,7 @@ export default {
           height: 58px;
           line-height: 58px;
           border-radius: 10px;
-          background-color: $mainColor;
+          background-color: #83bef3;
           padding: 0 24px;
           margin-right: 30px;
           font-size: 24px;
@@ -161,8 +226,8 @@ export default {
         .last-child{
           margin-right: 0;
         }
-        .ban{
-          background-color: #83bef3;
+        .allow{
+          background-color: $mainColor;
         }
       }
     }
@@ -172,6 +237,35 @@ export default {
       .info-1{
         padding-bottom: 30px;
       }
+      .iconfont{
+        transform:translateY(-50%) rotate(180deg)!important;
+        color: $mainColor;
+      }
+    }
+  }
+  .search{
+    position: fixed;
+    bottom: 0;
+    background-color: #eeeeee;
+    height: 98px;
+    padding: 12px 36px;
+    width: calc(100% - 72px);
+    input{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 74px;
+      width: calc(100% - 150px);
+      border: 0;
+      background-color: #eeeeee;
+      outline: none;
+    }
+    img{
+      position:absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      right: 36px;
     }
   }
 }
