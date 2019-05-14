@@ -58,7 +58,7 @@
         </div>
         <div class="clear"></div>
       </div>
-      <div class="item item-last">
+      <div class="item item-last item-agree">
         <label><input type="checkbox" class="inputFix" v-model="agree">我已阅读并同意</label><span class="highlight" @click="infoIsShow = 1">《免责声明》</span>和<span class="highlight" @click="infoIsShow = 2">《时间表》</span>。
       </div>
     </div>
@@ -276,8 +276,14 @@ export default {
       label{
         display: block;
         line-height: 70px;
+        position: relative;
+        padding-left: 50px;
       }
     }
+  }
+  .item-agree{
+    height: 90px!important;
+    padding-left: 45px;
   }
 }
 .weui-skin_android{

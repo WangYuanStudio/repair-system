@@ -45,8 +45,10 @@
       }
     }
     .inputFix{
-      position: relative;
-      top: 3px;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
     }
   }
   .item-last{
