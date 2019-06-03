@@ -5,7 +5,7 @@ import axios from "axios";
 // import ebus from "./ebus"
 
 let config = {
-  baseURL: process.env.NODE_ENV === "production" ? "https://web.test.wangyuan.info/wy_app_bz/public/index.php":'/',
+  baseURL: process.env.NODE_ENV === "production" ? "https://wx-app.wangyuan.info/bz/public/index.php":'/',
   timeout: 60 * 1000, // Timeout
   withCredentials: true // Check cross-site Access-Control
 };

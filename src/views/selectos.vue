@@ -7,10 +7,10 @@
     <div class="form">
       <div class="item radio">
         新系统
-        <label><input type="radio" class="inputFix" value="win10" v-model="info.os">win10</label>
-        <label><input type="radio" class="inputFix" value="win8" v-model="info.os">win8</label>
-        <label><input type="radio" class="inputFix" value="win7" v-model="info.os">win7</label>
-        <label><input type="radio" class="inputFix" value="" v-model="info.os">不需要重装</label>
+        <label><input type="radio" class="inputFix2" value="win10" v-model="info.os">win10</label>
+        <label><input type="radio" class="inputFix2" value="win8" v-model="info.os">win8</label>
+        <label><input type="radio" class="inputFix2" value="win7" v-model="info.os">win7</label>
+        <label><input type="radio" class="inputFix2" value="" v-model="info.os">不需要重装</label>
       </div>
       <!-- <div class="item">
         旧密码
@@ -96,6 +96,10 @@ export default {
     .radio{
       label{
         margin-left: 20px;
+        .inputFix2{
+          position: relative;
+          top: 5px;
+        }
       }
     }
     .setTimeText{

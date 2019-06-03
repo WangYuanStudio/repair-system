@@ -12,7 +12,7 @@
           <p>
             <span class="first"><i class="iconfont icon-time prompt"></i>{{item.time}}</span>
             <span><span class="prompt">预约码：</span>{{item.id}}</span>
-            <span class="status" @click.stop="showFailDetail(item)" :class="{todo:item.status<4}">{{item.status | infoStatus}}</span>
+            <span class="status" @click.stop="showFailDetail(item)" :class="{error:item.status == '4' || item.status== '2' }">{{item.status | infoStatus}}</span>
           </p>
           <p v-if="item.errMsg" class="errMsg"><span class="prompt">失败理由：</span>{{item.errMsg}}</p>
         </div>
@@ -49,9 +49,9 @@ export default {
   },
   methods: {
     showFailDetail(item){
-      if(item.status === "2"){
+      if(item.status === "2" || item.status === "4"){
         this.$alert({
-          title: '审核失败',
+          title: "失败原因",
           content: item.fail_detail
         })
       }
@@ -129,8 +129,8 @@ export default {
             transform: translateY(-50%);
             right: 0;
           }
-          .todo{
-            color: #bfbfbf;
+          .error{
+            color: #f10000;
           }
         }
       }

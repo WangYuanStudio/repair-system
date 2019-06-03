@@ -21,26 +21,26 @@
     </div>
     <div class="form">
       <div class="item">
-        姓名
+        <div class="key">姓名</div>
         <input class="textInput" type="text" v-model="form.name">
       </div>
       <div class="item">
-        手机号码
+        <div class="key">手机号码</div>
         <input class="textInput" type="number" v-model="form.phone">
       </div>
       <div class="item">
-        密码
+        <div class="key">电脑密码</div>
         <input class="textInput" type="password" v-model="form.w_old_password">
         <span class="hint">选填</span>
       </div>
       <div class="item" @click="setTimeIsShow = true">
-        预约时间
+        <div class="key">预约时间</div>
         <span class="inputText" v-if="form.time">{{form.time}}</span>
         <label v-if="!form.time" class="setTimeText" >请选择<i class="iconfont icon-xia"></i></label>
       </div>
       <router-link to="/selectos">
         <div class="item">
-          报装系统类（单选）
+          <div class="key">报装系统类（单选）</div>
           <span class="inputText" v-if="form.osinfo">{{ form.osinfo.os}}</span>
           <span class="selectSystem"><i class="iconfont icon-you"></i></span>
         </div>
@@ -163,7 +163,7 @@ export default {
       } else if(!this.form.time){
         this.$alert({title: '时间',content: '请选择前往工作室的时间'})
         return false
-      } else if(!this.form.os && !this.form.software.length){
+      } else if(!this.form.osinfo && !this.form.software.length){
         this.$alert({title: '报装项目',content: '至少选择一个报装项目'})
         return false
       } else if(!this.agree){

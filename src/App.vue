@@ -36,8 +36,13 @@ export default {
             this.$router.push("/admin")
           }
         }else{
-          location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0e9860d811af920&redirect_uri=https%3A%2F%2Fwx-api.wangyuan.info%2Foauth_callback&response_type=code&scope=snsapi_userinfo&state=test_bz#wechat_redirect"
+          this.$alert({
+            content: '登录失败'
+          })
         }
+        // else{
+        //   location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0e9860d811af920&redirect_uri=https%3A%2F%2Fwx-api.wangyuan.info%2Foauth_callback&response_type=code&scope=snsapi_userinfo&state=bz#wechat_redirect"
+        // }
         cancel()
       }).catch(()=>{
         this.$alert({
@@ -46,7 +51,7 @@ export default {
         cancel()
       })
     }else{
-      if(process.env.NODE_ENV === 'development' || (new Date()).valueOf() < (localStorage.limit - 1200000)){//-1200000
+      if((new Date()).valueOf() < (localStorage.limit - 1200000)){//-1200000
         this.$store.commit({
           type:'setOid',
           oid: localStorage.oid
@@ -55,9 +60,10 @@ export default {
           this.$router.push("/admin")
         }
         cancel()
-      }else{
-        location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0e9860d811af920&redirect_uri=https%3A%2F%2Fwx-api.wangyuan.info%2Foauth_callback&response_type=code&scope=snsapi_userinfo&state=test_bz#wechat_redirect"
       }
+      // else{
+      //   location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe0e9860d811af920&redirect_uri=https%3A%2F%2Fwx-api.wangyuan.info%2Foauth_callback&response_type=code&scope=snsapi_userinfo&state=bz#wechat_redirect"
+      // }
     }
   }
 }
