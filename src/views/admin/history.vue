@@ -55,7 +55,7 @@ export default {
         //   time: '2018-09-18',
         //   status: '3',
         //   id: '150',
-        //   phone: '13178852579',
+        //   phone: '',
         //   software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
         // },
         // {
@@ -64,7 +64,7 @@ export default {
         //   time: '2018-09-18',
         //   status: '3',
         //   id: '150',
-        //   phone: '13178852579',
+        //   phone: '',
         //   software: ['Microsoft Office 2012','Photoshop','SQL Server 2012','Visual Studio 2012']
         // }
       ],
